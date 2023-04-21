@@ -51,8 +51,11 @@
 -keepattributes SourceFile,LineNumberTable
 
 # Enable proguard with Cordova
+-keep class org.apache.cordova.* { *; }
 -keep class org.apache.cordova.** { *; }
+-keep class org.apache.cordova.engine.* { *; }
 -keep public class * extends org.apache.cordova.CordovaPlugin
+-keep class org.apache.cordova.CordovaPlugin{}
 
 -keep class com.google.android.gms.dynamite.DynamiteModule$DynamiteLoaderClassLoader { java.lang.ClassLoader sClassLoader; }
 
@@ -74,6 +77,20 @@
 -dontwarn com.google.common.**
 -dontwarn com.google.ads.**
 -dontwarn com.google.android.gms.**
+
+# Enable proguard with Camera
+-keep public class org.apache.cordova.BuildHelper {
+    private static java.lang.String TAG;
+    public static java.lang.Object getBuildConfigValue(
+        android.content.Context, java.lang.String );
+    static void <clinit>();
+}
+
+-keep class com.stockedgednext.app.BuildConfig { *; }
+-keep class in.stockedge.app.BuildConfig { *; }
+-keep class org.apache.cordova.camera.** { *;}
+-keep class androidx.core.content.FileProvider { *;}
+-keep class android.util.Base64 { *;}
 
 # apache.http
 -optimizations !class/merging/vertical*,!class/merging/horizontal*,!code/simplification/arithmetic,!field/*,!code/allocation/variable
@@ -108,3 +125,12 @@
 # These clases contain references to cordova webView
 -keep class com.ionicframework.cordova.webview.** {*; }
 -keep class com.ionicframework.cordova.webview.*
+
+
+# Rules for firebase analytics
+-keep class by.chemerisuk.cordova.firebase.** { *; }
+-keep class by.chemerisuk.cordova.support.** { *; }
+
+-keepclassmembers class ** {
+    @by.chemerisuk.cordova.support.CordovaMethod *;
+}
